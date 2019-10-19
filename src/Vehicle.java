@@ -1,9 +1,6 @@
-public class Vehicle {
-    private String lincensePlate;
-    private Ticket ticket;
+public interface  Vehicle {
 
-    public void giveTicket(Ticket ticket){
-        this.ticket = ticket;
-    }
+    public String getLicensePlate();
+    public int getSize();
 
 }

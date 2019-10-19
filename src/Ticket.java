@@ -5,6 +5,16 @@ import java.time.Instant;
 public class Ticket {
     private Instant entry;
     private Instant exit;
+    private Car car;
+
+    public  Ticket(Car car){
+        this.car = car;
+        setEntry();;
+    }
+
+    public Car getCar(){
+        return car;
+    }
 
     public void setEntry(){
         entry = Instant.now();
