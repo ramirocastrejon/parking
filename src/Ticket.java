@@ -3,8 +3,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 public class Ticket {
-    private Instant entry;
-    private Instant exit;
+    private int entry;
+    private int exit;
     private Car car;
 
     public  Ticket(Car car){
@@ -17,18 +17,18 @@ public class Ticket {
     }
 
     public void setEntry(){
-        entry = Instant.now();
+        entry = 0;
     }
 
-    public Instant getEntry(){
+    public int getEntry(){
         return entry;
     }
 
-    public void setExit(){
-        exit = Instant.now();
+    public void setExit(int hoursExpanded){
+        exit = hoursExpanded;
     }
 
-    public Instant getExit(){
+    public int getExit(){
         return exit;
     }
 }

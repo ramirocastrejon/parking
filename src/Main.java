@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Integer.parseInt;
+
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
@@ -17,19 +19,29 @@ public class Main {
         System.out.println("Amount due is : " + newPay.payAmountDue());*/
 
         ArrayList<Car> carList = new ArrayList<>();
-        File file = new File("src","test1.txt");
+        //file can be test1.txt - test5.txt
+        File file = new File("src","test2.txt");
         Scanner scanner = new Scanner(file);
+        String read =scanner.next();
+        int rate = parseInt(read);
         while (scanner.hasNext()) {
-            String read =scanner.next();
-            Car temp = new Car(read);
+            String readCar =scanner.next();
+            Car temp = new Car(readCar);
             carList.add(temp);
         }
 
         scanner.close();
-        for (int i=0; i<carList.size(); i++)
-            System.out.print(carList.get(i).getLicensePlate()+" ");
+
         ParkingLot newParkingLot = new ParkingLot();
-        newParkingLot.entry(carList.get(0));
+        newParkingLot.setRate(rate);
+        System.out.println("Current hourly rate: " + newParkingLot.getRate());
+        for (int i=0; i<carList.size(); i++)
+            newParkingLot.entry(carList.get(i));
+
+        for (int i=0; i<carList.size(); i++)
+            newParkingLot.exit(carList.get(i));
+
+        System.out.println("Total profit: "+  newParkingLot.getTotalProfit());
 
     }
 }
