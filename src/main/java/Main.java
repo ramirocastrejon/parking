@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Integer.parseInt;
 
@@ -18,9 +17,9 @@ public class Main {
         newPay.calculateAmountDue();;
         System.out.println("Amount due is : " + newPay.payAmountDue());*/
 
-        ArrayList<Car> carList = new ArrayList<>();
+        ArrayList<Car> carList = new ArrayList<Car>();
         //file can be test1.txt - test5.txt
-        File file = new File("src","test2.txt");
+        File file = new File("src", "test2.txt");
         Scanner scanner = new Scanner(file);
         String read =scanner.next();
         int rate = parseInt(read);
