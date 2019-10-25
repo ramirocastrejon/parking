@@ -31,16 +31,35 @@ public class Main {
 
         scanner.close();
 
-        ParkingLot newParkingLot = new ParkingLot();
-        newParkingLot.setRate(rate);
-        System.out.println("Current hourly rate: " + newParkingLot.getRate());
-        for (int i=0; i<carList.size(); i++)
-            newParkingLot.entry(carList.get(i));
+        ArrayList<ParkingLot> allParkingLots = new ArrayList<ParkingLot>();
+        for(int lots = 0; lots <=2; lots++){
+            ParkingLot newParkingLot = new ParkingLot(lots,rate);
+            allParkingLots.add(newParkingLot);
+        }
 
+       // newParkingLot.setRate(rate);
+        System.out.println("Current hourly rate: " + allParkingLots.get(0).getRate());
+        System.out.println("Group: " + allParkingLots.get(1).getGroupID());
         for (int i=0; i<carList.size(); i++)
-            newParkingLot.exit(carList.get(i));
+            allParkingLots.get(1).entry(carList.get(i));
 
-        System.out.println("Total profit: "+  newParkingLot.getTotalProfit());
+        /*for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(1).exit(carList.get(i));
+
+        System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());*/
+        System.out.println("Group: " + allParkingLots.get(0).getGroupID());
+        for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(0).entry(carList.get(i));
+
+        /*for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(0).exit(carList.get(i));*/
+        for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(1).exit(carList.get(i));
+
+        System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
+        //System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
+
+
 
     }
 }

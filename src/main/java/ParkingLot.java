@@ -3,20 +3,21 @@ import java.util.Random;
 
 public class ParkingLot {
     private int maxCapacity = 10;
-    private int parkingRate = 5;
-    private static int currentCapacity;
-    private static ArrayList<Ticket> listTickets= new ArrayList<Ticket>();
-    private static ParkingLot parkingLot = null;
+    private int parkingRate;
+    private int currentCapacity;
+    private  static ArrayList<Ticket> listTickets= new ArrayList<Ticket>();
+    private static ParkingLot parkingLot;
     private static int totalProfit;
+    private int groupID;
 
-    ParkingLot(){
+    ParkingLot(int groupID, int rate){
+        this.groupID = groupID;
+        this.parkingRate=rate;
         currentCapacity=0;
         totalProfit=0;
     }
 
     public static ParkingLot getParkingLot(){
-        if(parkingLot==null)
-            parkingLot = new ParkingLot();
         return parkingLot;
     }
 
@@ -27,8 +28,18 @@ public class ParkingLot {
             return false;
     }
 
+    public boolean isAlreadyParked(Car car){
+
+        for(int j = 0; j <listTickets.size();j++){
+            if(listTickets.get(j).getCar().getLicensePlate() ==car.getLicensePlate())
+                return true;
+        }
+        return false;
+    }
+
     public void entry(Car car){//car
-        if(spotAvailable()) {
+
+        if(spotAvailable()&&!isAlreadyParked(car)) {
             Ticket temp = new Ticket(car);
             listTickets.add(temp);
             currentCapacity++;
@@ -52,6 +63,7 @@ public class ParkingLot {
                         + listTickets.get(i).getExit() + " hours and pays "
                 + newPayment.getAmountDue() );
                 totalProfit+=newPayment.getAmountDue();
+                listTickets.remove(i);
                 currentCapacity--;
             }
 
@@ -70,4 +82,5 @@ public class ParkingLot {
     public int getRate() {
         return parkingRate;
     }
+    public int getGroupID(){return groupID;}
 }
