@@ -1,25 +1,30 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class ParkingLot {
-    private int maxCapacity = 10;
+    private int maxCapacity;
     private int parkingRate;
     private int currentCapacity;
-    private  ArrayList<Ticket> listTickets= new ArrayList<Ticket>();
-    private static ArrayList<Car> carIsParked = new ArrayList<Car>();
-    //private static ParkingLot parkingLot;
+    private static HashMap<String,Ticket> activeTickets = new HashMap<String, Ticket>();
     private static int totalProfit;
     private int groupID;
     private int discount;
     private String policy;
 
-    ParkingLot(int groupID, int rate){
+    ParkingLot(int groupID, int capacity, int rate, int discount){
         this.groupID = groupID;
+        maxCapacity=capacity;
         this.parkingRate=rate;
-        this.discount = 0;
+        if(discount > rate)
+            this.discount = 0;
+        else
+            this.discount=discount;
         currentCapacity=0;
         totalProfit=0;
     }
+
+    ParkingLot(){}
 
    /* public static ParkingLot getParkingLot(){
         return parkingLot;
@@ -32,6 +37,10 @@ public class ParkingLot {
         return maxCapacity-currentCapacity;
     }
 
+    public boolean isCarParkedHere(Car car){
+        return activeTickets.containsKey(car.getLicensePlate());
+    }
+
     public boolean isSpotAvailable(){
         if(currentCapacity < maxCapacity)
             return true;
@@ -39,22 +48,13 @@ public class ParkingLot {
             return false;
     }
 
-    public boolean isAlreadyParked(Car car){
-
-        for(int j = 0; j <carIsParked.size();j++){
-            if(carIsParked.get(j).getLicensePlate() ==car.getLicensePlate())
-                return true;
-        }
-        return false;
-    }
 
     public void entry(Car car){//car
 
         if(isSpotAvailable()) {
-            if(!isAlreadyParked(car)) {
-                Ticket temp = new Ticket(car, getGroupID());
-                listTickets.add(temp);
-                carIsParked.add(car);
+            if(!isCarParkedHere(car)) {
+                Ticket temp = new Ticket(car, getGroupID(),parkingRate,discount);
+                activeTickets.put(car.getLicensePlate(),temp);
                 currentCapacity++;
             }
             else
@@ -63,28 +63,25 @@ public class ParkingLot {
         else
             System.out.println("The parking lot is currently full. Cannot admit car "
             + car.getLicensePlate());
-        //System.out.println("\n" + temp.getEntry().toString() + "\n" + temp.getCar().getLicensePlate());
+
 
     }
 
     public void exit(Car car){//car
-        for (int i=0; i<listTickets.size(); i++){
-            if(listTickets.get(i).getCar().getLicensePlate()==car.getLicensePlate()){
-                Random ran = new Random();
-                int nxt = ran.nextInt(10) + 1;
-                listTickets.get(i).setExit(nxt);
-                Pay newPayment = new Pay();
-                newPayment.calculateAmountDue(listTickets.get(i),parkingRate);
-                System.out.println("Car: " + listTickets.get(i).getCar().getLicensePlate() + " spent "
-                        + listTickets.get(i).getExit() + " hours in Parking Lot " +
-                        listTickets.get(i).getGroupID()+ " and pays "
-                + newPayment.getAmountDue() );
-                totalProfit+=newPayment.getAmountDue();
-                listTickets.remove(i);
-                carIsParked.remove(i);
-                currentCapacity--;
-            }
 
+        if(activeTickets.containsKey(car.getLicensePlate())){
+            Random ran = new Random();
+            int nxt = ran.nextInt(10) + 1;
+            Ticket temp = activeTickets.get(car.getLicensePlate());
+            temp.setExit(nxt);
+            Pay newPayment = new Pay();
+            newPayment.calculateAmountDue(temp);
+            System.out.println("Car " + car.getLicensePlate() + " spent " + nxt + " hours in parking lot "
+            + temp.getGroupID() + " with an hourly rate of " + temp.getRate() + " and pays " +
+                    newPayment.getAmountDue());
+            totalProfit+=newPayment.getAmountDue();
+            activeTickets.remove(car.getLicensePlate());
+            currentCapacity--;
         }
 
 
@@ -99,4 +96,14 @@ public class ParkingLot {
         return parkingRate;
     }
     public int getGroupID(){return groupID;}
+
+    public void getAllActiveTickets(){
+        for (String i : activeTickets.keySet()) {
+            System.out.println(i);
+        }
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
 }

@@ -9,13 +9,6 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 	// write your code here
-       /* System.out.println("This will be a parking lot model");
-        Pay newPay = new Pay();
-        newPay.setEntry();
-        TimeUnit.SECONDS.sleep(5);
-        newPay.setExit();;
-        newPay.calculateAmountDue();;
-        System.out.println("Amount due is : " + newPay.payAmountDue());*/
 
         ArrayList<Car> carList = new ArrayList<Car>();
         //file can be test1.txt - test5.txt
@@ -36,40 +29,31 @@ public class Main {
 
         ArrayList<ParkingLot> allParkingLots = new ArrayList<ParkingLot>();
         for(int lots = 0; lots <groups; lots++){
-            System.out.print("What is the hourly rate for group " + lots + " ?");
+            System.out.println("What is the maximum capacity of lot " + lots + " ?");
+            int newCapacity = sc.nextInt();
+            System.out.print("What is the hourly rate for lot " + lots + " ?");
             int newRate = sc.nextInt();
-            ParkingLot newParkingLot = new ParkingLot(lots,newRate);
+            System.out.println("What is this lot's flat discount ?");
+            int newDiscount = sc.nextInt();
+            ParkingLot newParkingLot = new ParkingLot(lots,newCapacity,newRate,newDiscount);
             allParkingLots.add(newParkingLot);
         }
         System.out.println("Created "+ allParkingLots.size() + " parking lots");
-        for (int i = 0; i < allParkingLots.size(); i++) {
-            System.out.println(allParkingLots.get(i).getRate());
+
+
+        ParkingLotManager lotManager = new ParkingLotManager();
+        lotManager.getAllRatesAndDisc(allParkingLots);
+        for (int i=0; i<carList.size(); i++) {
+            ParkingLot lowest = lotManager.getLowestRate(allParkingLots);
+            System.out.println("Car " +carList.get(i).getLicensePlate() + " chose Parking Lot " +
+                    lowest.getGroupID() + " with a rate of " + lowest.getRate());
+            lowest.entry(carList.get(i));
         }
+        lotManager.getAllAvailableSpots(allParkingLots);
 
-       // newParkingLot.setRate(rate);
-        System.out.println("Current hourly rate: " + allParkingLots.get(0).getRate());
-        System.out.println("Group: " + allParkingLots.get(0).getGroupID());
-        for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(0).entry(carList.get(i));
-
-        /*for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(1).exit(carList.get(i));
-
-        System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());*/
-        System.out.println("Current hourly rate: " + allParkingLots.get(1).getRate());
-        System.out.println("Group: " + allParkingLots.get(1).getGroupID());
-        for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(1).entry(carList.get(i));
-
-        /*for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(0).exit(carList.get(i));*/
-        for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(0).exit(carList.get(i));
+        lotManager.exitAllCars(allParkingLots,carList);
 
         System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
-        //System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
-
-
 
     }
 }
