@@ -1,16 +1,20 @@
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Instant;
+
 
 public class Ticket {
     private int entry;
     private int exit;
+    private int groupID;
     private Car car;
 
-    public  Ticket(Car car){
+    public  Ticket(Car car, int id){
         this.car = car;
+        groupID = id;
         setEntry();;
     }
+
+    public int getGroupID(){ return groupID;}
 
     public Car getCar(){
         return car;

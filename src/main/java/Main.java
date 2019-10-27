@@ -28,33 +28,43 @@ public class Main {
             Car temp = new Car(readCar);
             carList.add(temp);
         }
-
         scanner.close();
 
+        Scanner sc = new Scanner(System.in);
+        System.out.print("How many groups are there?: ");
+        int groups = sc.nextInt();
+
         ArrayList<ParkingLot> allParkingLots = new ArrayList<ParkingLot>();
-        for(int lots = 0; lots <=2; lots++){
-            ParkingLot newParkingLot = new ParkingLot(lots,rate);
+        for(int lots = 0; lots <groups; lots++){
+            System.out.print("What is the hourly rate for group " + lots + " ?");
+            int newRate = sc.nextInt();
+            ParkingLot newParkingLot = new ParkingLot(lots,newRate);
             allParkingLots.add(newParkingLot);
+        }
+        System.out.println("Created "+ allParkingLots.size() + " parking lots");
+        for (int i = 0; i < allParkingLots.size(); i++) {
+            System.out.println(allParkingLots.get(i).getRate());
         }
 
        // newParkingLot.setRate(rate);
         System.out.println("Current hourly rate: " + allParkingLots.get(0).getRate());
-        System.out.println("Group: " + allParkingLots.get(1).getGroupID());
-        for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(1).entry(carList.get(i));
-
-        /*for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(1).exit(carList.get(i));
-
-        System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());*/
         System.out.println("Group: " + allParkingLots.get(0).getGroupID());
         for (int i=0; i<carList.size(); i++)
             allParkingLots.get(0).entry(carList.get(i));
 
         /*for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(1).exit(carList.get(i));
+
+        System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());*/
+        System.out.println("Current hourly rate: " + allParkingLots.get(1).getRate());
+        System.out.println("Group: " + allParkingLots.get(1).getGroupID());
+        for (int i=0; i<carList.size(); i++)
+            allParkingLots.get(1).entry(carList.get(i));
+
+        /*for (int i=0; i<carList.size(); i++)
             allParkingLots.get(0).exit(carList.get(i));*/
         for (int i=0; i<carList.size(); i++)
-            allParkingLots.get(1).exit(carList.get(i));
+            allParkingLots.get(0).exit(carList.get(i));
 
         System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
         //System.out.println("Total profit: "+  allParkingLots.get(1).getTotalProfit());
